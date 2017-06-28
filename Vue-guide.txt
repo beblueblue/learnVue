@@ -1,0 +1,7 @@
+1、指令的使用：v-model v-text v-show v-if v-blind v-for v-on
+	v-for 用于数据的循环
+	v-text 
+2、过滤器filter
+	全局过滤器
+	局部过滤器
+3、组件Component
