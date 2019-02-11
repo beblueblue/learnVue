@@ -40,7 +40,6 @@ function sortExtensionsByExtType(extensions) {
     extensions.sort(function(a, b) {
       let aNum = sortArr.indexOf(a.extType),
           bNum = sortArr.indexOf(b.extType);
-      console.log(aNum, bNum);
       
       return type === 'asc' ? aNum - bNum : bNum - aNum;
     });
@@ -69,8 +68,63 @@ function sortExtensionsByExtType(extensions) {
 **/
 
 function sumByQuarter(saleItems) {
-  // 注意浮点数过限
+  let list = [
+    {quarter: 1, totalPrices: 0, transactionNums: 0},
+    {quarter: 2, totalPrices: 0, transactionNums: 0},
+    {quarter: 3, totalPrices: 0, transactionNums: 0},
+    {quarter: 4, totalPrices: 0, transactionNums: 0}
+  ];
+  if (Array.isArray(saleItems)) {
+    saleItems.forEach(function(item) {
+      let totalItem = {},
+          num = item.salePrice,
+          totalNum = 0,
+          baseNum1 = 0,
+          baseNum2 = 0,
+          baseNum = 0;
 
+      if(item.month < 4) {
+        totalItem = list[0];
+      } else if (item.month < 7) {
+        totalItem = list[1];
+      } else if (item.month < 10) {
+        totalItem = list[2];
+      } else {
+        totalItem = list[3];
+      }
+
+      totalItem.transactionNums++;
+      totalNum = totalItem.totalPrices;
+      
+      // precision handling
+      try {
+        baseNum1 = num.toString().split(".")[1].length;
+      } catch (e) {
+        baseNum1 = 0;
+      }
+      try {
+        baseNum2 = totalNum.toString().split(".")[1].length;
+      } catch (e) {
+        baseNum2 = 0;
+      }
+      baseNum = Math.pow(10, Math.max(baseNum1, baseNum2));
+
+      totalItem.totalPrices = (num * baseNum + totalNum * baseNum) / baseNum;
+    });
+  } else {
+    console.log(`
+      error: The first parameter should be Array, e.g., 
+      [
+        {
+          month: n, //[1-12],
+          date: n, //[1-31],
+          transationId: "xxx",
+          salePrice: number
+        }
+      ]
+    `);
+  }
+  return list;
 }
 
 /**
@@ -82,7 +136,29 @@ function sumByQuarter(saleItems) {
 **/
 
 function averageByQuarter(saleItems) {
-  // 注意浮点数精确度
+  // reused the 'sumByQuarter'
+  let list = sumByQuarter(saleItems);
+
+  list.forEach(function(item) {
+    let num = item.totalPrices,
+        totalNum = item.transactionNums,
+        baseNum = 0;
+    
+    if(totalNum === 0) {
+      item.averagePrices = 0;
+    } else {
+      // precision handling
+      try {
+        baseNum = num.toString().split(".")[1].length;
+      } catch (e) {
+        baseNum = 0;
+      }
+      item.averagePrices = (Number(num.toString().replace(".", "")) / totalNum) / Math.pow(10, baseNum);
+    }
+
+    delete item.totalPrices;
+  });
+  return list;
 }
 
 
