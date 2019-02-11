@@ -19,7 +19,7 @@ function sortExtensionsByName(extensions) {
       return type === 'asc' ? aStr.localeCompare(bStr) : bStr.localeCompare(aStr);
     });
   } else {
-    console.log("error: The first parameter should be Array, e.g., [{firstName: 'xxx', lastName: 'xxx', ext: 'xxx', extType: 'xxx'}]");
+    console.log("error: The first parameter should be an Array, e.g., [{firstName: 'xxx', lastName: 'xxx', ext: 'xxx', extType: 'xxx'}]");
   }
 }
 
@@ -44,7 +44,7 @@ function sortExtensionsByExtType(extensions) {
       return type === 'asc' ? aNum - bNum : bNum - aNum;
     });
   } else {
-    console.log("error: The first parameter should be Array, e.g., [{firstName: 'xxx', lastName: 'xxx', ext: 'xxx', extType: 'xxx'}]");
+    console.log("error: The first parameter should be an Array, e.g., [{firstName: 'xxx', lastName: 'xxx', ext: 'xxx', extType: 'xxx'}]");
   }
 }
 
@@ -113,7 +113,7 @@ function sumByQuarter(saleItems) {
     });
   } else {
     console.log(`
-      error: The first parameter should be Array, e.g., 
+      error: The first parameter should be an Array, e.g., 
       [
         {
           month: n, //[1-12],
@@ -187,6 +187,11 @@ function averageByQuarter(saleItems) {
 
 function getUnUsedKeys(allKeys, usedKeys) {
 	//TODO
+  if (Array.isArray(allKeys) && Array.isArray(usedKeys)) {
+    
+  } else {
+    console.log('error: The first parameter and the second parameter should be an Array');
+  }
 }
 
 
