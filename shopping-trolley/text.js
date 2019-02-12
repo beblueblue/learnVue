@@ -186,6 +186,8 @@ function averageByQuarter(saleItems) {
   sequence2.next() --> 3;
   sequence2.next() --> 4;
 **/
+
+// ES5
 var Sequence;
 (function(){
     var unique;
@@ -203,6 +205,13 @@ var Sequence;
     }
 }());
 
+// ES6
+class Sequence {
+  next() {
+      return Sequence.index++;
+  }
+}
+Sequence.index = 1;
 
 
 /**
