@@ -13,8 +13,14 @@ function sortExtensionsByName(extensions) {
 
 	if (Array.isArray(extensions)) {
     extensions.sort(function(a, b) {
-      let aStr = a.firstName + (a.lastName || ' ') + (a.ext || ' '),
-          bStr = b.firstName + (b.lastName || ' ') + (b.ext || ' ');
+      let firstLength = Math.max(a.firstName.length, b.firstName.length),
+          lastLength = Math.max((a.lastName || '').length, (b.lastName || '').length),
+          extLength = Math.max((a.ext || '').length, (b.ext || '').length),
+          aStr,
+          bStr;
+
+      aStr = a.firstName.padEnd(firstLength, ' ') + (a.lastName || '').padEnd(lastLength, ' ') + (a.ext || ' ').padEnd(extLength, ' '),
+      bStr = b.firstName.padEnd(firstLength, ' ') + (b.lastName || '').padEnd(lastLength, ' ') + (b.ext || ' ').padEnd(extLength, ' ');
       
       return type === 'asc' ? aStr.localeCompare(bStr) : bStr.localeCompare(aStr);
     });
@@ -34,12 +40,18 @@ function sortExtensionsByName(extensions) {
 function sortExtensionsByExtType(extensions) {
   // reserved the type of sort
   let type = String(arguments[1]).toLowerCase() === 'desc' ? 'desc' : 'asc',
-      sortArr = ['Dept', 'AO', 'FaxUser', 'VirtualUser', 'DigitalUser'];
+      sortObj = {
+        'Dept': 0,
+        'AO': 1,
+        'FaxUser': 2,
+        'VirtualUser': 3,
+        'DigitalUser': 4
+      };
   
   if (Array.isArray(extensions)) {
     extensions.sort(function(a, b) {
-      let aNum = sortArr.indexOf(a.extType),
-          bNum = sortArr.indexOf(b.extType);
+      let aNum = sortObj[a.extType],
+          bNum = sortObj[b.extType];
       
       return type === 'asc' ? aNum - bNum : bNum - aNum;
     });
@@ -174,7 +186,22 @@ function averageByQuarter(saleItems) {
   sequence2.next() --> 3;
   sequence2.next() --> 4;
 **/
-
+var Sequence;
+(function(){
+    var unique;
+    Sequence = function(){
+        if(unique){
+            return unique
+        }
+        
+        unique = this
+        
+        this.index = 1;
+        this.next = function() {
+          return this.index++;
+        };
+    }
+}());
 
 
 
@@ -188,7 +215,19 @@ function averageByQuarter(saleItems) {
 function getUnUsedKeys(allKeys, usedKeys) {
 	//TODO
   if (Array.isArray(allKeys) && Array.isArray(usedKeys)) {
-    
+    let newArr = allKeys.concat(usedKeys),
+        unusedKeys = [];
+
+    // sort the values, and then remove duplicate values in loop
+    newArr.sort();
+    for(let i = 0; i < newArr.length; i++){
+      if(newArr[i] !== newArr[i+1]) {
+        unusedKeys.push(newArr[i]);
+      } else {
+        i++;
+      }
+    }
+    return unusedKeys;
   } else {
     console.log('error: The first parameter and the second parameter should be an Array');
   }
