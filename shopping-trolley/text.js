@@ -19,8 +19,8 @@ function sortExtensionsByName(extensions) {
           aStr,
           bStr;
 
-      aStr = a.firstName.padEnd(firstLength, ' ') + (a.lastName || '').padEnd(lastLength, ' ') + (a.ext || ' ').padEnd(extLength, ' '),
-      bStr = b.firstName.padEnd(firstLength, ' ') + (b.lastName || '').padEnd(lastLength, ' ') + (b.ext || ' ').padEnd(extLength, ' ');
+      aStr = a.firstName.padEnd(firstLength, ' ') + (a.lastName || '').padEnd(lastLength, ' ') + (a.ext || '').padEnd(extLength, ' '),
+      bStr = b.firstName.padEnd(firstLength, ' ') + (b.lastName || '').padEnd(lastLength, ' ') + (b.ext || '').padEnd(extLength, ' ');
       
       return type === 'asc' ? aStr.localeCompare(bStr) : bStr.localeCompare(aStr);
     });
